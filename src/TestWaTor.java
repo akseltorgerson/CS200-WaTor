@@ -118,7 +118,7 @@ public class TestWaTor {
             int[]move1 = list1.get(i);
             int[]move2 = list2.get(i);
             if ( move1[0] == move2[0] && move1[1] == move2[1]) {
-                //okay
+                //ok
             } else {
                 result = false;
                 System.err.println( "list1("+ i+"):" + Arrays.toString(move1) + " doesn't match in list2: " + Arrays.toString( move2));
