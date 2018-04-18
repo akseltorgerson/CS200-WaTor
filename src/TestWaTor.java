@@ -145,18 +145,18 @@ public class TestWaTor {
                                         {-1,-1,-1},
                                         {-1,-1,-1}}; // fill them each with -1 or 0
         
-        ArrayList<int[]> positions = WaTor.unoccupiedPositions( fish, sharks, 1, 1);
-        ArrayList<int[]>expected = new ArrayList<>();
-        expected.add( new int[]{0,1});
+        ArrayList<int[]> positions = WaTor.unoccupiedPositions( fish, sharks, 1, 1); // create an array list of positions from our method
+        ArrayList<int[]>expected = new ArrayList<>(); // create an array of expected positions
+        expected.add( new int[]{0,1}); // fill the array with the expected outputs
         expected.add( new int[]{2,1});
         expected.add( new int[]{1,0});
         expected.add( new int[]{1,2});
-        if ( !matchingArrayLists( expected, positions)) {
+        if ( !matchingArrayLists( expected, positions)) { // if our array lists dont match then output an error
             error = true;
             System.err.println("testUnoccupiedPositions 1 :" );
         }
         
-        positions = WaTor.unoccupiedPositions( fish, sharks, 0, 1);
+        positions = WaTor.unoccupiedPositions( fish, sharks, 0, 1); // repeat above code for the rest of the tests
         expected = new ArrayList<>();
         expected.add( new int[]{2,1});
         expected.add( new int[]{0,0});
@@ -177,13 +177,13 @@ public class TestWaTor {
             System.err.println("testUnoccupiedPositions 3 :" );
         }        
         
-        fish = new int[][]{{0,0,0},{0,0,0},{0,0,0}};
+        fish = new int[][]{{0,0,0},{0,0,0},{0,0,0}}; // create a new starting array for fish and sharks
         sharks = new int[][]{{-1,-1,-1},{-1,-1,-1},{-1,-1,-1}};
         
         positions = WaTor.unoccupiedPositions( fish, sharks, 1, 1);
         expected = new ArrayList<>();
 
-        if ( !matchingArrayLists( expected, positions)) {
+        if ( !matchingArrayLists( expected, positions)) { // again repeat the code for 3 more tests
             error = true;
             System.err.println("testUnoccupiedPositions 4 :" );
         }
@@ -203,10 +203,10 @@ public class TestWaTor {
             error = true;
             System.err.println("testUnoccupiedPositions 6 :" );
         }        
-        fish = new int[][]{{0,0,0},{-1,0,0},{0,0,0}};
+        fish = new int[][]{{0,0,0},{-1,0,0},{0,0,0}}; // make a new fish and shark array again
         sharks = new int[][]{{-1,-1,-1},{-1,-1,-1},{-1,-1,-1}};
         
-        positions = WaTor.unoccupiedPositions( fish, sharks, 1, 1);
+        positions = WaTor.unoccupiedPositions( fish, sharks, 1, 1); // repeat these tests again for 3
         expected = new ArrayList<>();
         expected.add( new int[]{1,0});
 
@@ -230,7 +230,7 @@ public class TestWaTor {
             System.err.println("testUnoccupiedPositions 9 :" );
         }
         
-        if ( error) {
+        if ( error) { // if any errors are true then print failed else print passed
             System.err.println("testUnoccupiedPositions failed");
         } else {
             System.out.println("testUnoccupiedPositions passed");            
@@ -243,10 +243,91 @@ public class TestWaTor {
      * 2.
      */
     private static void testFishPositions() {
+            
+        //------------------------ TEST 1 -------------------------------------
+        boolean error = false;
+        int[][] testBoard = {{Config.EMPTY, 1, Config.EMPTY},       // -1, 1 ,-1
+                            {3, Config.SHARK_MARK, Config.EMPTY},   //  3, O ,-1
+                            {2, 5, 2}};                             //  2, 5 , 2
         
-        //TODO Implement in Milestone 2
-    }
+       
+        ArrayList<int[]> expected = new ArrayList<>(); // create array objects for expected and returned
+        ArrayList<int[]> returned = new ArrayList<>();
     
+        int[] fish1 = {0,1}; // create our expected array locations using our test board
+        int[] fish2 = {2,1};
+        int[] fish3 = {1,0};
+
+        expected.add(fish1); // add them to our array list
+        expected.add(fish2);
+        expected.add(fish3);
+        
+        returned = WaTor.fishPositions(testBoard, 1, 1); // actually run our method 
+
+        if (!matchingArrayLists(expected, returned)) { // if they arent equal flag an error
+            error = true;
+            System.err.println("fishPositions(testBoard, 1,1) has failed because the array did not match the expected");
+        }
+ 
+        //------------------------ TEST 2 ------------------------------------- // repeat for two more tests where our shark in on the edge
+        
+        error = false;
+        int[][] testBoard2 =   {{Config.EMPTY, 1, Config.EMPTY},     // -1, 1 ,-1
+                                {Config.SHARK_MARK, -1, 7},          //  O, -1, 7
+                                {2, 5, 2}};                          //  2, 5 , 2
+        
+        expected = new ArrayList<>();
+        returned = new ArrayList<>();
+    
+        int[] fish4 = {2,0};
+        int[] fish5 = {1,2};
+
+        expected.add(fish4);
+        expected.add(fish5);
+        
+        returned = WaTor.fishPositions(testBoard2, 1, 0);
+
+        if (!matchingArrayLists(expected, returned)) {
+            error = true;
+            System.err.println("fishPositions(testBoard2, 1, 0) has failed because the array did not match the expected");
+        }
+        
+        //------------------------ TEST 3 -------------------------------------
+        
+        error = false;
+        int[][] testBoard3 =   {{Config.SHARK_MARK, 1, 1},       //  O,  1,  1
+                                {3, -1, 7},                                 //  3, -1, -1
+                                {2, 5, 2}};                                 //  1, -1, -1
+        
+        expected = new ArrayList<>();
+        returned = new ArrayList<>();
+    
+        int[] fish6 = {2,0};
+        int[] fish7 = {1,0};
+        int[] fish8 = {0,2};
+        int[] fish9 = {0,1};
+
+        expected.add(fish6);
+        expected.add(fish7);
+        expected.add(fish8);
+        expected.add(fish9);
+        
+        returned = WaTor.fishPositions(testBoard3, 0, 0);
+
+        if (!matchingArrayLists(expected, returned)) {
+            error = true;
+            System.err.println("fishPositions(testBoard3, 0, 0) has failed because the array did not match the expected");
+        }
+
+        //----------------------- Final Printout -----------------------------------
+        
+        if (error) { // if any errors are true then print failed else print passed
+            System.err.println("testFishPositions failed");
+        } else {
+            System.out.println("testFishPositions passed");            
+        }
+    }
+
     /**
      * This runs some tests on the chooseMove method. 
      * 1. TODO describe each test in your own words. 
@@ -255,67 +336,67 @@ public class TestWaTor {
     private static void testChooseMove() {
         boolean error = false;
         Random randGen = new Random();
-        randGen.setSeed( 456);
+        randGen.setSeed(456); // make a new random object with a seed of 456
         
-        ArrayList<int[]> input = new ArrayList<>();
+        ArrayList<int[]> input = new ArrayList<>(); // make a new array list object
         int [] expected = null;
-        int [] result = WaTor.chooseMove( input, randGen);
+        int [] result = WaTor.chooseMove(input, randGen); // put results of chooseMove into result array
         if ( result != expected) {
             error = true;
             System.err.println("testChooseMove 0: result not null");
         }
         
-        input.clear();
-        int [] oneMove = new int[] {0,1};
-        input.add(oneMove);
-        expected = oneMove;
-        result = WaTor.chooseMove( input, randGen);
-        if ( result != expected) {
+        input.clear(); // clear the input array list
+        int [] oneMove = new int[] {0,1}; 
+        input.add(oneMove); // add one move to the input list
+        expected = oneMove; // set it equal to the expected array
+        result = WaTor.chooseMove( input, randGen); // get the result of the input array with the rand gen
+        if ( result != expected) { // if the result is not equal to what we want flag an error and output
             error = true;
-            System.err.println("testChooseMove 1: result not " + Arrays.toString( oneMove));
+            System.err.println("testChooseMove 1: result not " + Arrays.toString(oneMove));
         }
         
-        input.clear();
-        int [] move1 = new int[] {0,1};
+        input.clear(); // clear the input array
+        int [] move1 = new int[] {0,1}; // make two move arrays
         int [] move2 = new int[] {1,0};
-        input.add( move1);
+        input.add( move1); // add each array to the input array list
         input.add( move2);
-        int move1Count = 0;
+        int move1Count = 0; // set the move count to 0 
         int move2Count = 0;
-        int numTrials = 1000;
-        for ( int i = 0; i < numTrials; i++) {
-            result = WaTor.chooseMove( input, randGen);
-            if ( result == move1) move1Count++; 
-            else if ( result == move2) move2Count++;
+        int numTrials = 1000; // set the number of trials to 1000
+        for ( int i = 0; i < numTrials; i++) { // loop through 0-1000 with variable i
+            result = WaTor.chooseMove( input, randGen); // get a result and put into result array
+            if ( result == move1) move1Count++; // if the result equals our move increase move count
+            else if ( result == move2) move2Count++; // if the result equals move 2 then increase move count 2
         }
-        if ( move1Count != 513 || move2Count != 487 ) {
-            error = true;
+        if ( move1Count != 513 || move2Count != 487 ) { // if move1count does not equal expected or move2count flag an error
+            error = true; // print off error message
             System.err.println("testChooseMove 2: expected 513,487 move1Count=" + move1Count + " move2Count=" + move2Count);
         }
         
         input.clear();
-        move1 = new int[] {0,1};
+        move1 = new int[] {0,1}; // init 3 moves each into respecting arrays
         move2 = new int[] {1,0};
         int[] move3 = new int[] {2,1};
-        input.add( move1);
+        input.add( move1); // add all the moves to the input array list
         input.add( move2);
         input.add( move3);
-        move1Count = 0;
+        move1Count = 0; // init all move counts to 0
         move2Count = 0;
         int move3Count = 0;
-        numTrials = 1000;
-        for ( int i = 0; i < numTrials; i++) {
-            result = WaTor.chooseMove( input, randGen);
-            if ( result == move1) move1Count++; 
+        numTrials = 1000; 
+        for ( int i = 0; i < numTrials; i++) { // loop through 1000 times
+            result = WaTor.chooseMove( input, randGen); // put the result into the result array
+            if ( result == move1) move1Count++; // again if the result equals move 1, 2, or 3 then inc respective move count
             else if ( result == move2) move2Count++;
             else if ( result == move3) move3Count++;
         }
-        if ( move1Count != 325 || move2Count != 341 || move3Count != 334 ) {
-            error = true;
+        if ( move1Count != 325 || move2Count != 341 || move3Count != 334 ) { // if they dont equal expected values then flag error
+            error = true; // print out error message
             System.err.println("testChooseMove 3: expected 325,341,334 move1Count=" + move1Count + " move2Count=" + move2Count + " move3Count=" + move3Count);
         }
         
-        input.clear();
+        input.clear(); // repeat same exact tests as above but repeat for 4 moves instead of 3 like before
         move1 = new int[] {0,1};
         move2 = new int[] {1,0};
         move3 = new int[] {2,1};
