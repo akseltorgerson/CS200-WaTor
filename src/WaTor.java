@@ -681,8 +681,44 @@ public class WaTor {
      */
     public static ArrayList<int[]> unoccupiedPositions(int[][] fish, int[][] sharks, int row, int col) {
         ArrayList<int[]> unoccupied = new ArrayList<>();
-
         //TODO Milestone 2
+        int checkRow = 0;
+        int checkCol = 0;
+        
+        for (int i = 0; i < 4; i++) {
+            if (i == 0) {
+                checkRow = row - 1; // check coordinates for directly above 
+                checkCol = col;
+            } else if (i == 1) {
+                checkRow = row + 1; // check coordinates for directly below 
+                checkCol = col;
+            } else if (i == 2) {
+                checkRow = row; // check coordinates for directly left
+                checkCol = col - 1;
+            } else if (i == 3) {
+                checkRow = row; // check coordinates for directly right
+                checkCol = col + 1;
+            } 
+            if (checkRow > fish.length-1) { // if the checkRow is off the map on the bottom set it to 0(top row)
+                checkRow = 0; 
+            } else if (checkRow < 0) { // if the checkRow is off the map on the top then set it to max-1(bottom row)
+                checkRow = fish.length-1;
+            }
+        
+            if (checkCol > fish[0].length-1) { // if the checkCol is off the map on the right then set it to 0(left side)
+                checkCol = 0;
+            } else if (checkCol < 0) { // if the checkCol is off the map on the left then set it to max-1(right side)
+                checkCol = fish[0].length-1;
+            }
+        
+            if ((fish[checkRow][checkCol] == Config.EMPTY) && (sharks[checkRow][checkCol]) == Config.EMPTY) { // if the spot we are checking is not filled with a fish or shark
+                int[] currentSpace = new int[2];
+                currentSpace[0] = checkRow;                  // i.e. it is open
+                currentSpace[1] = checkCol;  
+                unoccupied.add(currentSpace); // then fill the array with the coords of the open space
+            }
+        }
+        
         return unoccupied;
     }
 
@@ -701,7 +737,21 @@ public class WaTor {
      */
     public static int[] chooseMove(ArrayList<int[]> neighbors, Random randGen) {
         //TODO Milestone 2
-        return null; //change in Milestone 2
+    	
+    	if (neighbors == null) {
+    		System.err.println("Null neighbors array.");
+    		return null;
+    	} else if (randGen == null) {
+    		System.err.println("Null randGen object.");
+    	} else if (neighbors.size() == 0) {
+    		return null;
+    	} else if (neighbors.size() == 1) {
+    		return neighbors.get(0);
+    	}
+    	
+    	int randElement = randGen.nextInt(neighbors.size());
+    	
+        return neighbors.get(randElement); //change in Milestone 2
     }
 
     /**
