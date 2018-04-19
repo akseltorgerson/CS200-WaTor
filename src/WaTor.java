@@ -60,31 +60,24 @@ public class WaTor {
         Scanner input = new Scanner(System.in);
         Random randGen = new Random();  
 
-        //values at the same index in these parallel arrays correspond to the 
-        //same creature
+        //values at the same index in these parallel arrays correspond to the same creature
         
-        //a value equal or greater than 0 at a location indicates a fish of 
-        //that age at that location.
+        //a value equal or greater than 0 at a location indicates a fish of that age at that location.
         int[][] fish = null;
         
-        //true at a location indicates that the fish moved during the current
-        //chronon
+        //true at a location indicates that the fish moved during the current chronon
         boolean[][] fishMoved = null; 
 
-        //a value equal or greater than 0 at a location indicates a shark of 
-        //that age at that location
+        //a value equal or greater than 0 at a location indicates a shark of that age at that location
         int[][] sharks = null; 
         
-        //true at a location indicates that the shark moved during the current
-        //chronon
+        //true at a location indicates that the shark moved during the current chronon
         boolean[][] sharksMoved = null;
         
-        //a value equal or greater than 0 indicates the number of chronon
-        //since the shark last ate.
+        //a value equal or greater than 0 indicates the number of chronon since the shark last ate.
         int[][] starve = null;
 
-        //an array for simulation parameters
-        //to be used when saving or loading parameters in Milestone 3
+        //an array for simulation parameters to be used when saving or loading parameters in Milestone 3
         int[] simulationParameters = null;
         
         //welcome message
@@ -162,19 +155,20 @@ public class WaTor {
             if (response.equalsIgnoreCase("end")) {
                 break; //leave simulation loop
             }
+           
    
             //clear fishMoved and sharksMoved from previous chronon
             //TODO Milestone 1
             clearMoves(fishMoved);
             clearMoves(sharksMoved);
-            
-            
-                
+                 
             //call fishSwimAndBreed
             //TODO Milestone 2
+            fishSwimAndBreed(fish, sharks, fishMoved, fishBreed, randGen);
                 
             //call sharksHuntAndBreed
             //TODO Milestone 2
+            sharksHuntAndBreed(fish, sharks, fishMoved, sharksMoved, sharksBreed, starve, sharksStarve, randGen);
                 
             //increment current chronon and count the current number of fish and sharks
             //TODO Milestone 1
@@ -182,7 +176,6 @@ public class WaTor {
             numFish = countCreatures(fish);
             numSharks = countCreatures(sharks);
             
-
             //if all the fish or sharks are gone then end simulation
             simulationEnd = numFish <= 0 || numSharks <= 0;
         };
@@ -282,8 +275,7 @@ public class WaTor {
      * @param toRow  The row the fish is moving to.
      * @param toCol  The column the fish is moving to.
      */
-    public static void aFishMovesAndBreeds(int[][] fish, boolean[][] fishMove, int fromRow,
-        int fromCol, int toRow, int toCol) {
+    public static void aFishMovesAndBreeds(int[][] fish, boolean[][] fishMove, int fromRow, int fromCol, int toRow, int toCol) {
         if (Config.DEBUG) {
             System.out.printf("DEBUG fish moved from %d,%d to %d,%d and breed\n", fromRow, fromCol, toRow,
                 toCol);
@@ -307,8 +299,7 @@ public class WaTor {
      * @param row The row the shark is in.
      * @param col The column the shark is in.
      */
-    public static void sharkStarves(int[][] sharks, boolean[][] sharksMove, int[][] starve, int row,
-        int col) {
+    public static void sharkStarves(int[][] sharks, boolean[][] sharksMove, int[][] starve, int row, int col) {
         if (Config.DEBUG) {
             System.out.printf("DEBUG shark %d,%d starves\n", row, col);
         }
@@ -328,8 +319,7 @@ public class WaTor {
      * @param row The row the shark is in.
      * @param col The column the shark is in.
      */
-    public static void sharkStays(int[][] sharks, boolean[][] sharksMove, int[][] starve, int row,
-        int col) {
+    public static void sharkStays(int[][] sharks, boolean[][] sharksMove, int[][] starve, int row, int col) {
         if (Config.DEBUG) {
             System.out.printf("DEBUG shark %d,%d can't move\n", row, col);
         }
@@ -351,8 +341,7 @@ public class WaTor {
      * @param toRow  The row the shark is moving to.
      * @param toCol  The column the shark is moving to.
      */
-    public static void sharkMoves(int[][] sharks, boolean[][] sharksMove, int[][] starve,
-        int fromRow, int fromCol, int toRow, int toCol) {
+    public static void sharkMoves(int[][] sharks, boolean[][] sharksMove, int[][] starve, int fromRow, int fromCol, int toRow, int toCol) {
         if (Config.DEBUG) {
             System.out.printf("DEBUG shark moved from %d,%d to %d,%d\n", fromRow, fromCol, toRow, toCol);
         }
@@ -381,8 +370,7 @@ public class WaTor {
      * @param toRow  The row the shark is moving to.
      * @param toCol  The column the shark is moving to.
      */
-    public static void sharkMovesAndBreeds(int[][] sharks, boolean[][] sharksMove, int[][] starve,
-        int fromRow, int fromCol, int toRow, int toCol) {
+    public static void sharkMovesAndBreeds(int[][] sharks, boolean[][] sharksMove, int[][] starve, int fromRow, int fromCol, int toRow, int toCol) {
 
         if (Config.DEBUG) {
             System.out.printf("DEBUG shark moved from %d,%d to %d,%d and breeds\n", fromRow, fromCol,
@@ -415,8 +403,7 @@ public class WaTor {
      * @param toRow  The row the shark is moving to.
      * @param toCol  The column the shark is moving to.  
      */
-    public static void sharkEatsFish(int[][] sharks, boolean[][] sharksMove, int[][] starve,
-        int[][] fish, boolean[][] fishMove, int fromRow, int fromCol, int toRow, int toCol) {
+    public static void sharkEatsFish(int[][] sharks, boolean[][] sharksMove, int[][] starve, int[][] fish, boolean[][] fishMove, int fromRow, int fromCol, int toRow, int toCol) {
         if (Config.DEBUG) {
             System.out.printf("DEBUG shark moved from %d,%d and ate fish %d,%d\n", fromRow, fromCol,
                 toRow, toCol);
@@ -454,9 +441,7 @@ public class WaTor {
      * @param toRow  The row the shark is moving to.
      * @param toCol  The column the shark is moving to.  
      */
-    public static void sharkEatsFishAndBreeds(int[][] sharks, boolean[][] sharksMove,
-        int[][] starve, int[][] fish, boolean[][] fishMove, int fromRow, int fromCol, int toRow,
-        int toCol) {
+    public static void sharkEatsFishAndBreeds(int[][] sharks, boolean[][] sharksMove, int[][] starve, int[][] fish, boolean[][] fishMove, int fromRow, int fromCol, int toRow, int toCol) {
         if (Config.DEBUG) {
             System.out.printf("DEBUG shark moved from %d,%d and ate fish %d,%d and breed\n", fromRow,
                 fromCol, toRow, toCol);
@@ -722,7 +707,6 @@ public class WaTor {
         return unoccupied;
     }
 
-
     /**
      * This randomly selects, with the Random number generator passed as a parameter, 
      * one of elements (array of int) in the neighbors list.  If the size of neighbors is 0 (empty)
@@ -793,7 +777,6 @@ public class WaTor {
      *          fish 0 is returned indicating success. 
      */
     public static int fishSwimAndBreed(int[][] fish, int[][] sharks, boolean[][] fishMove, int fishBreed, Random randGen) {
-        //TODO Milestone 2
         if (fish == null || fish[0].length < 1 || fish.length < 1){ // check for null or less than 1 in each dimension
             System.err.println("fishSwimAndBreed Invalid fish array: Null or not at least 1 in each dimension.");
             return -1; // return -1 meaning array(s) are bad
@@ -811,13 +794,21 @@ public class WaTor {
             return -3; // return -3 meaning randGen is null
         }
   
-        for (int i = 0; i < fish.length; i++) {
-            //chooseMove(unoccupiedPositions(fish, sharks, fish[i][0], fish[i][1]), randGen);
-            // NEED TO FIGURE THIS THE FUCK OUT
+        for (int i = 0; i < fish.length; i++) { // loop through fish array
+            for (int t = 0; t < fish[0].length; t++) {
+                if (!fishMove[i][t] && fish[i][t] != Config.EMPTY) { // if its not an empty spot (i.e. a fish is there)
+                    if (chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen) == null) { // if choseMove is null then aFishStays because there are no moves
+                        aFishStays(fish, fishMove, i, t);
+                    } else if (fish[i][t] <= fishBreed) { // if the fish can move and is not breeding age then aFishMoves
+                        int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen);
+                        aFishMoves(fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
+                    } else { // else if it can move but is breeding age then aFishMovesAndBreeds
+                        int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen);
+                        aFishMovesAndBreeds(fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
+                    } 
+                }
+            }   
         }
-        
-        
-        
         return 0;
     }
 
@@ -924,9 +915,60 @@ public class WaTor {
      * @return -1, -2, -3 for invalid parameters as specified above. After attempting to move all
      * sharks 0 is returned indicating success.
      */
-    public static int sharksHuntAndBreed(int[][] fish, int[][] sharks, boolean[][] fishMove,
-        boolean[][] sharksMove, int sharksBreed, int[][] starve, int sharksStarve, Random randGen) {
+    public static int sharksHuntAndBreed(int[][] fish, int[][] sharks, boolean[][] fishMove, boolean[][] sharksMove, int sharksBreed, int[][] starve, int sharksStarve, Random randGen) {
         //TODO Milestone 2
+        if (fish == null || fish[0].length < 1 || fish.length < 1){ // check for null or less than 1 in each dimension
+            System.err.println("sharksHuntAndBreed Invalid fish array: Null or not at least 1 in each dimension.");
+            return -1; // return -1 meaning array(s) are bad
+        } else if (sharks == null || sharks[0].length < 1 || sharks.length < 1) { // repeat for all arrays in the parameters
+            System.err.println("sharksHuntAndBreed Invalid sharks array: Null or not at least 1 in each dimension.");
+            return -1;
+        } else if (fishMove == null || fishMove[0].length < 1 || fishMove.length < 1) {
+            System.err.println("sharksHuntAndBreed Invalid fishMove array: Null or not at least 1 in each dimension.");
+            return -1;
+        } else if (sharksMove == null || sharksMove[0].length < 1 || sharksMove.length < 1) {
+            System.err.println("sharksHuntAndBreed Invalid sharksMove array: Null or not at least 1 in each dimension.");
+            return -1;
+        } else if (starve == null || starve[0].length < 1 || starve.length < 1) {
+            System.err.println("sharksHuntAndBreed Invalid starve array: Null or not at least 1 in each dimension.");
+            return -1;
+        } else if (sharksBreed < 0) { // if the sharksBreed is negative print an error
+            System.err.println("sharksHuntAndBreed sharksBreed value is less than 0");
+            return -2;
+        } else if (sharksStarve < 0) { // same with sharks starve
+            System.err.println("SharksHuntAndBreed sharksStarve value is less than 0");
+            return -2;
+        } else if (randGen == null) {
+            System.err.println("randGen object is null"); // if randGen is null
+            return -3; // return -3 meaning randGen is null
+        }
+        
+        for (int i = 0; i < sharks.length; i++) {
+            for (int t = 0; t < sharks[0].length; t++) {
+                if (!sharksMove[i][t] && sharks[i][t] != Config.EMPTY) {
+                    if (starve[i][t] >= sharksStarve) {
+                        sharkStarves(sharks, sharksMove, starve, i, t);
+                    } else if (fishPositions(fish, i, t).size() == 0) { // if there aren't any fish around
+                        if (chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen) == null) {
+                            sharkStays(sharks, sharksMove, starve, i, t);
+                        } else if (sharks[i][t] <= sharksBreed) {
+                            int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen);
+                            sharkMoves(sharks, sharksMove, starve, i, t, chosenMove[0], chosenMove[1]);
+                        } else {
+                            int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen); 
+                            sharkMovesAndBreeds(sharks, sharksMove, starve, i, t, chosenMove[0], chosenMove[1]);
+                        } 
+                    } else { // if there are neighboring fish
+                        int[] chosenMove = chooseMove(fishPositions(fish, i, t), randGen);
+                        if (sharks[i][t] <= sharksBreed) {
+                            sharkEatsFish(sharks, sharksMove, starve, fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
+                        } else {
+                            sharkEatsFishAndBreeds(sharks, sharksMove, starve, fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
+                        }
+                    }
+                }
+            }
+        }
         return 0;
     }
     
