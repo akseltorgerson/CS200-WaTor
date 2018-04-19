@@ -792,10 +792,32 @@ public class WaTor {
      * @return -1, -2, -3 for invalid parameters as specified above. After attempting to move all
      *          fish 0 is returned indicating success. 
      */
-    public static int fishSwimAndBreed(int[][] fish, int[][] sharks, boolean[][] fishMove,
-        int fishBreed, Random randGen) {
-
+    public static int fishSwimAndBreed(int[][] fish, int[][] sharks, boolean[][] fishMove, int fishBreed, Random randGen) {
         //TODO Milestone 2
+        if (fish == null || fish[0].length < 1 || fish.length < 1){ // check for null or less than 1 in each dimension
+            System.err.println("fishSwimAndBreed Invalid fish array: Null or not at least 1 in each dimension.");
+            return -1; // return -1 meaning array(s) are bad
+        } else if (sharks == null || sharks[0].length < 1 || sharks.length < 1) { // repeat for sharks and fishMove
+            System.err.println("fishSwimAndBreed Invalid sharks array: Null or not at least 1 in each dimension.");
+            return -1;
+        } else if (fishMove == null || fishMove[0].length < 1 || fishMove.length < 1) {
+            System.err.println("fishSwimAndBreed Invalid fishMove array: Null or not at least 1 in each dimension.");
+            return -1;
+        } else if (fishBreed < 0) { // if fishBreed is negative
+            System.err.println("FishBreed is less than 0"); 
+            return -2; // return -2 meaning fishBreed is negative
+        } else if (randGen == null) {
+            System.err.println("randGen object is null"); // if randGen is null
+            return -3; // return -3 meaning randGen is null
+        }
+  
+        for (int i = 0; i < fish.length; i++) {
+            //chooseMove(unoccupiedPositions(fish, sharks, fish[i][0], fish[i][1]), randGen);
+            // NEED TO FIGURE THIS THE FUCK OUT
+        }
+        
+        
+        
         return 0;
     }
 
