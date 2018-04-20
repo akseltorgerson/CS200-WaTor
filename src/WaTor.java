@@ -42,8 +42,15 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
-//FIXME class header comment
-
+/**
+ * This class contains all the methods to run the WaTor simulations. These methods 
+ * are public and can be accessed anywhere, this is important because the TestWaTor 
+ * file calls some of the methods in order to test the functionality of them.
+ * 
+ * @author Jim Williams
+ * @author Aksel Torgerson
+ *
+ */
 public class WaTor { 
     
     /**
@@ -122,7 +129,6 @@ public class WaTor {
         starve = new int[oceanHeight][oceanWidth];
 
         //make sure fish, sharks and starve arrays are empty (call emptyArray)
-        //TODO Milestone 1
         emptyArray(fish);
         emptyArray(sharks);
         emptyArray(starve);
@@ -133,9 +139,6 @@ public class WaTor {
         
         int numSharks = placeSharks(fish, sharks, startingSharks, sharksBreed, randGen);
         System.out.println("Placed " + numSharks + " sharks.");
-        
-
-        //TODO Milestone 1
 
         int currentChronon = 1;
         
@@ -147,9 +150,7 @@ public class WaTor {
             showFishAndSharks(currentChronon, fish, sharks);
 
             //prompt user for Enter, # of chronon, or 'end'
-            //Enter advances to next chronon, a number
-            //entered means run that many chronon, (TODO Milestone 2),
-            //'end' will end the simulation
+            //Enter advances to next chronon, a number entered means run that many chronon, 'end' will end the simulation
             System.out.print("Press Enter, # of chronon, or 'end': ");
             String response = input.nextLine().trim();
             int x = 1;
@@ -167,20 +168,16 @@ public class WaTor {
             for (int k = 0; k < x; k++) {
    
             	//clear fishMoved and sharksMoved from previous chronon
-            	//TODO Milestone 1
             	clearMoves(fishMoved);
             	clearMoves(sharksMoved);
                  
             	//call fishSwimAndBreed
-            	//TODO Milestone 2
             	fishSwimAndBreed(fish, sharks, fishMoved, fishBreed, randGen);
                 
             	//call sharksHuntAndBreed
-            	//TODO Milestone 2
             	sharksHuntAndBreed(fish, sharks, fishMoved, sharksMoved, sharksBreed, starve, sharksStarve, randGen);
                 
             	//increment current chronon and count the current number of fish and sharks
-            	//TODO Milestone 1
             	currentChronon++;
             	numFish = countCreatures(fish);
             	numSharks = countCreatures(sharks);
@@ -194,7 +191,6 @@ public class WaTor {
         }
         
         //print the final ocean contents
-        //TODO Milestone 1
         showFishAndSharks(currentChronon, fish, sharks);
         
         //Print out why the simulation ended.
@@ -236,8 +232,7 @@ public class WaTor {
      * the fishMove array that it has been updated this chronon.
      * 
      * @param fish The array containing all the ages of all the fish.
-     * @param fishMove The array containing the indicator of whether each fish moved this 
-     *        chronon.
+     * @param fishMove The array containing the indicator of whether each fish moved this chronon.
      * @param row The row of the fish that is staying.
      * @param col The col of the fish that is staying.
      */
@@ -254,8 +249,7 @@ public class WaTor {
      * fishMove array records that this fish has moved this chronon.
      * 
      * @param fish The array containing all the ages of all the fish.
-     * @param fishMove The array containing the indicator of whether each fish moved this 
-     *        chronon.
+     * @param fishMove The array containing the indicator of whether each fish moved this chronon.
      * @param fromRow  The row the fish is moving from.
      * @param fromCol The column the fish is moving from.
      * @param toRow  The row the fish is moving to.
@@ -281,8 +275,7 @@ public class WaTor {
      * fishMove array records that both fish moved this chronon.
      * 
      * @param fish The array containing all the ages of all the fish.
-     * @param fishMove The array containing the indicator of whether each fish moved this 
-     *        chronon.
+     * @param fishMove The array containing the indicator of whether each fish moved this chronon.
      * @param fromRow  The row the fish is moving from and where the new fish is located.
      * @param fromCol The column the fish is moving from and where the new fish is located.
      * @param toRow  The row the fish is moving to.
@@ -306,8 +299,7 @@ public class WaTor {
      * This removes the shark from the sharks, sharksMove and starve arrays.
      * 
      * @param sharks The array containing all the ages of all the sharks.
-     * @param sharksMove The array containing the indicator of whether each shark moved this 
-     *        chronon.
+     * @param sharksMove The array containing the indicator of whether each shark moved this chronon.
      * @param starve The array containing the time in chronon since the sharks last ate.
      * @param row The row the shark is in.
      * @param col The column the shark is in.
@@ -326,8 +318,7 @@ public class WaTor {
      * the shark last ate and notes in the sharkMove array that it has been updated this chronon.
      * 
      * @param sharks The array containing all the ages of all the sharks.
-     * @param sharksMove The array containing the indicator of whether each shark moved this 
-     *        chronon.
+     * @param sharksMove The array containing the indicator of whether each shark moved this chronon.
      * @param starve The array containing the time in chronon since the sharks last ate.
      * @param row The row the shark is in.
      * @param col The column the shark is in.
@@ -346,8 +337,7 @@ public class WaTor {
      * since the shark last ate and notes that this shark has moved this chronon.
      * 
      * @param sharks The array containing all the ages of all the sharks.
-     * @param sharksMove The array containing the indicator of whether each shark moved this 
-     *        chronon.
+     * @param sharksMove The array containing the indicator of whether each shark moved this chronon.
      * @param starve The array containing the time in chronon since the sharks last ate.
      * @param fromRow  The row the shark is moving from.
      * @param fromCol The column the shark is moving from.
@@ -375,8 +365,7 @@ public class WaTor {
      * fishMove array records that both fish moved this chronon. 
      * 
      * @param sharks The array containing all the ages of all the sharks.
-     * @param sharksMove The array containing the indicator of whether each shark moved this 
-     *        chronon.
+     * @param sharksMove The array containing the indicator of whether each shark moved this chronon.
      * @param starve The array containing the time in chronon since the sharks last ate.
      * @param fromRow  The row the shark is moving from.
      * @param fromCol The column the shark is moving from.
@@ -405,12 +394,10 @@ public class WaTor {
      * The fish is now gone.
      * 
      * @param sharks The array containing all the ages of all the sharks.
-     * @param sharksMove The array containing the indicator of whether each shark moved this 
-     *        chronon.
+     * @param sharksMove The array containing the indicator of whether each shark moved this chronon.
      * @param starve The array containing the time in chronon since the sharks last ate.
      * @param fish The array containing all the ages of all the fish.
-     * @param fishMove The array containing the indicator of whether each fish moved this 
-     *        chronon.
+     * @param fishMove The array containing the indicator of whether each fish moved this chronon.
      * @param fromRow  The row the shark is moving from.
      * @param fromCol The column the shark is moving from.
      * @param toRow  The row the shark is moving to.
@@ -443,12 +430,10 @@ public class WaTor {
      * That these sharks moved this chronon is noted.
      * 
      * @param sharks The array containing all the ages of all the sharks.
-     * @param sharksMove The array containing the indicator of whether each shark moved this 
-     *        chronon.
+     * @param sharksMove The array containing the indicator of whether each shark moved this chronon.
      * @param starve The array containing the time in chronon since the sharks last ate.
      * @param fish The array containing all the ages of all the fish.
-     * @param fishMove The array containing the indicator of whether each fish moved this 
-     *        chronon.
+     * @param fishMove The array containing the indicator of whether each fish moved this chronon.
      * @param fromRow  The row the shark is moving from.
      * @param fromCol The column the shark is moving from.
      * @param toRow  The row the shark is moving to.
@@ -644,13 +629,11 @@ public class WaTor {
     /**
      * This counts the number of fish or the number of sharks depending on the array passed in.
      * 
-     * @param fishOrSharks Either an array containing the ages of all the fish or an array
-     *        containing the ages of all the sharks.
+     * @param fishOrSharks Either an array containing the ages of all the fish or an array containing the ages of all the sharks.
      * @return The number of fish or number of sharks, depending on the array passed in.
      */
     public static int countCreatures(int[][] fishOrSharks) {
         int numCreatures = 0;
-        //TODO Milestone 1
         for (int i = 0; i < fishOrSharks.length; i++) { // loop through every element of the array 
             for (int t = 0; t < fishOrSharks[0].length; t++) {
                 if (fishOrSharks[i][t] != Config.EMPTY) { // if its not empty then increase number of creatures
@@ -679,7 +662,6 @@ public class WaTor {
      */
     public static ArrayList<int[]> unoccupiedPositions(int[][] fish, int[][] sharks, int row, int col) {
         ArrayList<int[]> unoccupied = new ArrayList<>();
-        //TODO Milestone 2
         int checkRow = 0;
         int checkCol = 0;
         
@@ -733,8 +715,6 @@ public class WaTor {
      * @return A int[] containing the coordinates of a creatures move or null as specified above.
      */
     public static int[] chooseMove(ArrayList<int[]> neighbors, Random randGen) {
-        //TODO Milestone 2
-    	
     	if (neighbors == null) {
     		System.err.println("Null neighbors array.");
     		return null;
@@ -748,7 +728,7 @@ public class WaTor {
     	
     	int randElement = randGen.nextInt(neighbors.size());
     	
-        return neighbors.get(randElement); //change in Milestone 2
+        return neighbors.get(randElement);
     }
 
     /**
@@ -806,49 +786,22 @@ public class WaTor {
             System.err.println("randGen object is null"); // if randGen is null
             return -3; // return -3 meaning randGen is null
         }
-        /*
-        for (int i = 0; i < fish.length; i++) { // loop through fish array
-            for (int t = 0; t < fish[0].length; t++) {
-                if (!fishMove[i][t] && fish[i][t] != Config.EMPTY) { // if its not an empty spot (i.e. a fish is there)
-                    if (chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen) == null) { // if choseMove is null then aFishStays because there are no moves
-                        aFishStays(fish, fishMove, i, t);
-                    } else if (fish[i][t] < fishBreed) { // if the fish can move and is not breeding age then aFishMoves
-                        int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen);
-                        aFishMoves(fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
-                    } else { // else if it can move but is breeding age then aFishMovesAndBreeds
-                        int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen);
-                        aFishMovesAndBreeds(fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
-                    } 
-                }
-            }   
-        }
-        return 0;
-    }*/
+        
         // Swim and Breed Fish
         for (int i = 0; i < fishMove.length; ++i) {
-            for (int j = 0; j < fishMove[0].length; ++j) {
-                // Checks if the fish hasn't moved this chronon and if a
-                // fish exists in the current position.
-                if (!fishMove[i][j] && fish[i][j] != Config.EMPTY) {
-                    //  Get available locations for the fish to move to
-                    int[] move = chooseMove(unoccupiedPositions(fish, sharks, i, j), randGen);
-                    //If the fish has an available move and is at the age of fishBreed,
-                    // the fish moves and breeds
-                    if (move != null && fish[i][j] >= fishBreed) {
-                        aFishMovesAndBreeds(fish, fishMove, i, j, move[0], move[1]);
-                        // If the fish has an available move but is not at the age to breed
-                        // the fish moves.
-                    } else if (move != null) {
-                        aFishMoves(fish, fishMove, i, j, move[0], move[1]);
-                        // If the fish does not have an available move
-                        // it stays.
+            for (int t = 0; t < fishMove[0].length; ++t) {              
+                if (!fishMove[i][t] && fish[i][t] != Config.EMPTY) {    
+                    int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen);
+                    if (chosenMove == null) {
+                        aFishStays(fish, fishMove, i, t);
+                    } else if (fish[i][t] < fishBreed) {
+                        aFishMoves(fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
                     } else {
-                        aFishStays(fish, fishMove, i, j);
+                        aFishMovesAndBreeds(fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
                     }
                 }
             }
         }
-
         return 0;
     }
 
@@ -869,7 +822,6 @@ public class WaTor {
      */
     public static ArrayList<int[]> fishPositions(int[][] fish, int row, int col) {
         ArrayList<int[]> fishPositions = new ArrayList<>();
-        //TODO Milestone 2;
         int checkRow = 0;
         int checkCol = 0;
         
@@ -943,10 +895,8 @@ public class WaTor {
      *         
      * @param fish The array containing all the ages of all the fish.
      * @param sharks The array containing all the ages of all the sharks.
-     * @param fishMove The array containing the indicator of whether each fish moved this 
-     *        chronon.
-     * @param sharksMove The array containing the indicator of whether each shark moved this 
-     *        chronon.
+     * @param fishMove The array containing the indicator of whether each fish moved this chronon.
+     * @param sharksMove The array containing the indicator of whether each shark moved this chronon.
      * @param sharksBreed The age the sharks must be in order to breed.
      * @param starve The array containing the time in chronon since the sharks last ate.
      * @param sharksStarve The time in chronon since the sharks last ate that results in them
@@ -956,7 +906,6 @@ public class WaTor {
      * sharks 0 is returned indicating success.
      */
     public static int sharksHuntAndBreed(int[][] fish, int[][] sharks, boolean[][] fishMove, boolean[][] sharksMove, int sharksBreed, int[][] starve, int sharksStarve, Random randGen) {
-        //TODO Milestone 2
         if (fish == null || fish[0].length < 1 || fish.length < 1){ // check for null or less than 1 in each dimension
             System.err.println("sharksHuntAndBreed Invalid fish array: Null or not at least 1 in each dimension.");
             return -1; // return -1 meaning array(s) are bad
@@ -982,84 +931,37 @@ public class WaTor {
             System.err.println("randGen object is null"); // if randGen is null
             return -3; // return -3 meaning randGen is null
         }
-        /*
-        for (int i = 0; i < sharks.length; i++) {
-            for (int t = 0; t < sharks[0].length; t++) {
-                if (!sharksMove[i][t] && sharks[i][t] != Config.EMPTY) {
-                    if (starve[i][t] >= sharksStarve) {
-                        sharkStarves(sharks, sharksMove, starve, i, t);
-                    } else if (fishPositions(fish, i, t).size() == 0) { // if there aren't any fish around
-                        if (chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen) == null) {
-                            sharkStays(sharks, sharksMove, starve, i, t);
-                        } else if (sharks[i][t] < sharksBreed) {
-                            int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen);
-                            sharkMoves(sharks, sharksMove, starve, i, t, chosenMove[0], chosenMove[1]);
+        
+        // Sharks Hunt and Breed
+        for (int i = 0; i < sharksMove.length; i++) {
+            for (int j = 0; j < sharksMove[0].length; ++j) {
+                if (!sharksMove[i][j] && sharks[i][j] != Config.EMPTY) {
+                    if (starve[i][j] >= sharksStarve) {
+                        sharkStarves(sharks, sharksMove, starve, i, j);
+                    } else {
+                        if (fishPositions(fish, i, j).size() == 0) {
+                            int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, j), randGen);
+                            if (chosenMove == null) {
+                                sharkStays(sharks, sharksMove, starve, i, j);
+                            } else if (sharks[i][j] < sharksBreed) {
+                                sharkMoves(sharks, sharksMove, starve, i, j, chosenMove[0], chosenMove[1]);
+                            } else {
+                                sharkMovesAndBreeds(sharks, sharksMove, starve, i, j, chosenMove[0], chosenMove[1]);
+                            }
                         } else {
-                            int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen); 
-                            sharkMovesAndBreeds(sharks, sharksMove, starve, i, t, chosenMove[0], chosenMove[1]);
-                        } 
-                    } else { // if there are neighboring fish
-                        int[] chosenMove = chooseMove(fishPositions(fish, i, t), randGen);
-                        if (sharks[i][t] < sharksBreed) {
-                            sharkEatsFish(sharks, sharksMove, starve, fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
-                        } else {
-                            sharkEatsFishAndBreeds(sharks, sharksMove, starve, fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
+                            int[] chosenMove = chooseMove(fishPositions(fish, i, j),randGen);
+                            if(chosenMove != null && sharks[i][j] < sharksBreed){
+                                sharkEatsFish(sharks, sharksMove, starve, fish, fishMove, i, j, chosenMove[0], chosenMove[1]);
+                            } else {
+                                sharkEatsFishAndBreeds(sharks, sharksMove, starve, fish, fishMove, i, j, chosenMove[0], chosenMove[1]);
+                            }
                         }
                     }
                 }
             }
         }
         return 0;
-    }*/
-        
-    ArrayList<int[]> neighbors;
-    ArrayList<int[]> fishPositions;
-    int[] move = new int[2];
-    // Sharks Hunt and Breed
-    for (int i = 0; i < sharksMove.length; i++) {
-        for (int j = 0; j < sharksMove[0].length; ++j) {
-            // Checks if the shark hasn't moved and a shark exists
-            // in the current position
-            if (!sharksMove[i][j] && sharks[i][j] != Config.EMPTY) {
-                // If the shark starves call sharkStarves
-                if (starve[i][j] >= sharksStarve) {
-                    sharkStarves(sharks, sharksMove, starve, i, j);
-                    // Otherwise move the shark and breed
-                } else {
-                    fishPositions = fishPositions(fish, i, j);
-                    // Get positions for the shark to move to
-                    if (fishPositions.size() == 0) {
-                        neighbors = unoccupiedPositions(fish, sharks, i, j);
-                        move = chooseMove(neighbors, randGen);
-                        if (move == null) {
-                            sharkStays(sharks, sharksMove, starve, i, j);
-                        } else if (sharks[i][j] >= sharksBreed) {
-                            sharkMovesAndBreeds(sharks, sharksMove, starve, i, j, move[0], move[1]);
-                        } else {
-                            sharkMoves(sharks, sharksMove, starve, i, j, move[0], move[1]);
-                        }
-                    }
-                    else{
-                        neighbors = fishPositions(fish,i,j);
-                        move = chooseMove(neighbors,randGen);
-                        if(move == null){
-                            continue;
-                        }
-                        if(sharks[i][j] >= sharksBreed){
-                            sharkEatsFishAndBreeds(sharks,sharksMove,starve,fish,fishMove,i,j,move[0],move[1]);
-                        }
-                        else{
-                            sharkEatsFish(sharks,sharksMove,starve,fish,fishMove,i,j,move[0],move[1]);
-                        }
-                    }
-                }
-            }
-
-
-        }
     }
-    return 0;
-}
     
     /**
      * This looks up the specified paramName in this Config.SIM_PARAMS array,

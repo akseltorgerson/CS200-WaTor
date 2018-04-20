@@ -64,7 +64,7 @@ import java.util.Random;
  * intended for use within this class.
  * 
  * @author Jim Williams
- * @author TODO add your name here when you add tests and comment the tests
+ * @author Aksel Torgerson
  *
  */
 public class TestWaTor {
@@ -81,20 +81,11 @@ public class TestWaTor {
         testClearMoves();
         testEmptyArray();
         testCountCreatures();
-        
-        //The best way to test the following is probably to compare output with the examples.
-        //showFishAndSharks
-        //placeFish        
-        //placeSharks      
-       
+  
         //milestone 2
         testUnoccupiedPositions();
         testChooseMove();
         testFishPositions();
-        
-        //test code for fishPositions would be similar to test code for unoccupiedPositions
-        //test fishSwimAndBreed and sharksHuntAndBreed may be easiest
-        //by comparing output to examples.
         
         //milestone 3
         //comparing results of either inputting from or outputting to files
@@ -131,8 +122,6 @@ public class TestWaTor {
     
     /**
      * This runs some tests on the unoccupiedPositions method. 
-     * 1. TODO describe each test in your own words. 
-     * 2.
      */
     private static void testUnoccupiedPositions() {
         boolean error = false;
@@ -239,8 +228,6 @@ public class TestWaTor {
     
     /**
      * This runs some tests on the fishPositions method. 
-     * 1. TODO describe each test in your own words. 
-     * 2.
      */
     private static void testFishPositions() {
             
@@ -330,8 +317,6 @@ public class TestWaTor {
 
     /**
      * This runs some tests on the chooseMove method. 
-     * 1. TODO describe each test in your own words. 
-     * 2.
      */    
     private static void testChooseMove() {
         boolean error = false;
@@ -431,7 +416,6 @@ public class TestWaTor {
     
     /**
      * This runs some tests on the clearMoves method. 
-     * 1. TODO describe each test in your own words. 
      */        
     private static void testClearMoves() {
         boolean error = false; // initiate error variable
@@ -460,7 +444,6 @@ public class TestWaTor {
     
     /**
      * This runs some tests on the emptyArray method. 
-     * 1. TODO describe each test in your own words. 
      */        
     private static void testEmptyArray() {
         boolean error = false;
@@ -489,8 +472,6 @@ public class TestWaTor {
     
     /**
      * This runs some tests on the countFish method. 
-     * 1. TODO describe each test in your own words. 
-     * 2.
      */        
     private static void testCountCreatures() {
         boolean error = false;
