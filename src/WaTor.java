@@ -38,7 +38,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -1059,14 +1058,12 @@ public class WaTor {
         	File file = new File(filename);
         	sc = new Scanner(file);
         	params = new int[Config.SIM_PARAMS.length];
-        	
-        	while (true) {
-        		nextLine = sc.nextLine();
+        	while (sc.hasNextLine()) {
+        	    nextLine = sc.nextLine();
         		if (!nextLine.contains("=")) { break; }
         		int index = indexForParam(nextLine.substring(0, nextLine.indexOf("=")));
         		params[index] = Integer.parseInt(nextLine.substring(nextLine.indexOf("=")+1));
         	}
-        	
         } catch (FileNotFoundException e) {
         	System.err.println("File not found: " + filename);
         } catch (Exception e) {
@@ -1074,9 +1071,6 @@ public class WaTor {
         } finally {
         	sc.close();
         }
-        
-        
-        
         return params;
     }  
     
@@ -1127,8 +1121,7 @@ public class WaTor {
      * @param oceanHeight The height of the ocean.
      * @param filename The name of the file to write the parameters and chart to.
      */
-    public static void savePopulationChart(int[]simulationParameters, ArrayList<int[]> history, 
-        int oceanWidth, int oceanHeight, String filename) throws IOException {
+    public static void savePopulationChart(int[]simulationParameters, ArrayList<int[]> history, int oceanWidth, int oceanHeight, String filename) throws IOException {
         //TODO Milestone 3
     }
 }
