@@ -94,10 +94,12 @@ public class WaTor {
         //If the user enters a y or Y as the only non-whitespace characters
         //then prompt for filename and call loadSimulationParameters
         //TODO in Milestone 3
+        simulationParameters = loadSimulationParameters("save.txt");
         
         
         //prompts the user to enter the simulation parameters
         if ( simulationParameters == null) {
+        	System.out.println("SimParam null");
             simulationParameters = new int[Config.SIM_PARAMS.length];
             for ( int i = 0; i < Config.SIM_PARAMS.length; i++) {
                 System.out.print("Enter " + Config.SIM_PARAMS[i] + ": ");
@@ -211,6 +213,13 @@ public class WaTor {
         //repeat the code to prompt asking the user if they want to save
         //the population chart.
         //TODO Milestone 3
+        try {
+        	saveSimulationParameters(simulationParameters, "save.txt");
+        } catch (IOException e) {
+        	
+        } catch (NullPointerException e) {
+        	
+        }
         
         
         //Always prompt the user to see if they would like to save a 
@@ -1003,8 +1012,16 @@ public class WaTor {
      * @param filename The name of the file to write the parameters to.
      */
     public static void saveSimulationParameters(int[] simulationParameters, String filename) throws IOException {
-
-        //TODO Milestone 3
+    		
+    	File file = new File(filename);
+    	FileWriter fw = new FileWriter(file);
+    	PrintWriter pw = new PrintWriter(fw);
+   		
+   		for (int i = 0; i < simulationParameters.length; i++) {
+       		pw.println(Config.SIM_PARAMS[i] + "=" + simulationParameters[i]);
+       	}    		
+    
+   		pw.close();
     }    
     
     /**
@@ -1036,7 +1053,30 @@ public class WaTor {
      */
     public static int[] loadSimulationParameters(String filename) {
         int[] params = null;
-        //TODO Milestone 3
+        Scanner sc = null;
+        String nextLine = "";
+        try {
+        	File file = new File(filename);
+        	sc = new Scanner(file);
+        	params = new int[Config.SIM_PARAMS.length];
+        	
+        	while (true) {
+        		nextLine = sc.nextLine();
+        		if (!nextLine.contains("=")) { break; }
+        		int index = indexForParam(nextLine.substring(0, nextLine.indexOf("=")));
+        		params[index] = Integer.parseInt(nextLine.substring(nextLine.indexOf("=")+1));
+        	}
+        	
+        } catch (FileNotFoundException e) {
+        	System.err.println("File not found: " + filename);
+        } catch (Exception e) {
+        	System.err.println("Unrecognized: " + nextLine);
+        } finally {
+        	sc.close();
+        }
+        
+        
+        
         return params;
     }  
     
