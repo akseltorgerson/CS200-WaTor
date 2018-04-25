@@ -92,10 +92,12 @@ public class WaTor {
         //Ask user if they would like to load simulation parameters from a file. 
         //If the user enters a y or Y as the only non-whitespace characters
         //then prompt for filename and call loadSimulationParameters
-        //TODO in Milestone 3
-        //simulationParameters = loadSimulationParameters("save.txt");
-        
-        
+        System.out.print("Do you want to load simulation parameters from a file (y/n): ");
+        if (Character.toLowerCase(input.nextLine().charAt(0)) == 'y') {
+        	System.out.print("Enter filename to load: ");
+        	simulationParameters = loadSimulationParameters(input.nextLine());
+        }
+       
         //prompts the user to enter the simulation parameters
         if ( simulationParameters == null) {
         	System.out.println("SimParam null");
@@ -144,8 +146,7 @@ public class WaTor {
         int currentChronon = 1;
         
         //init the history array list
-        ArrayList<int[]> history = new ArrayList();
-        int[] currentInfo = new int[3];
+        ArrayList<int[]> history = new ArrayList<int[]>();
 
         //simulation ends when no more sharks or fish remain
         boolean simulationEnd = numFish <= 0 || numSharks <= 0;
@@ -171,6 +172,13 @@ public class WaTor {
             }
             // run until
             for (int k = 0; k < x; k++) {
+            	
+            	//save our current info to the history array list to be used later if the user wants to save the population chart
+                int[] currentInfo = new int[3];
+                currentInfo[Config.HISTORY_CHRONON_INDEX] = currentChronon;
+                currentInfo[Config.HISTORY_NUM_FISH_INDEX] = numFish;
+                currentInfo[Config.HISTORY_NUM_SHARKS_INDEX] = numSharks;
+                history.add(currentInfo);
    
             	//clear fishMoved and sharksMoved from previous chronon
             	clearMoves(fishMoved);
@@ -183,28 +191,27 @@ public class WaTor {
             	sharksHuntAndBreed(fish, sharks, fishMoved, sharksMoved, sharksBreed, starve, sharksStarve, randGen);
             	
             	//get num fish and sharks
+            	currentChronon++;
             	numFish = countCreatures(fish);
             	numSharks = countCreatures(sharks);
                 
-            	//save our current info to the history array list to be used later if the user wants to save the population chart
-                currentInfo[Config.HISTORY_CHRONON_INDEX] = currentChronon;
-                currentInfo[Config.HISTORY_NUM_FISH_INDEX] = numFish;
-                currentInfo[Config.HISTORY_NUM_SHARKS_INDEX] = numSharks;
-                history.add(currentInfo);
-            	
             	//if all the fish or sharks are gone then end simulation
             	simulationEnd = numFish <= 0 || numSharks <= 0;
             	if (simulationEnd) {
             		break;
-            	}
-                
-            	//increment current chronon
-                currentChronon++;            
+            	}           
             }
         }
         
         //print the final ocean contents
         showFishAndSharks(currentChronon, fish, sharks);
+        
+        //add the final fish and shark data to our history list
+        int[] currentInfo = new int[3];
+        currentInfo[Config.HISTORY_CHRONON_INDEX] = currentChronon;
+        currentInfo[Config.HISTORY_NUM_FISH_INDEX] = numFish;
+        currentInfo[Config.HISTORY_NUM_SHARKS_INDEX] = numSharks;
+        history.add(currentInfo);
         
         //Print out why the simulation ended.
         if ( numSharks <= 0 ) {
@@ -1140,17 +1147,30 @@ public class WaTor {
             pw.println(Config.SIM_PARAMS[i] + "=" + simulationParameters[i]);
         }           
         
-        pw.print("\nPopulation Chart\nNumbers of fish(.) and sharks(O) in units of " + (oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH + "./n");
+        pw.print("\nPopulation Chart\nNumbers of fish(.) and sharks(O) in units of " + (oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH + ".\n");
         
-        for (int[] i : history) {
-            pw.printf("F%3d", history.get(i[Config.HISTORY_CHRONON_INDEX]-1)[Config.HISTORY_NUM_FISH_INDEX]);
-            pw.printf(",S%3d", history.get(i[Config.HISTORY_CHRONON_INDEX]-1)[Config.HISTORY_NUM_SHARKS_INDEX]);
-            pw.printf("%4d)", history.get(i[Config.HISTORY_CHRONON_INDEX]-1)[Config.HISTORY_CHRONON_INDEX]);
-            pw.println();
+        for (int i = 0; i<history.size(); i++) {
+        	pw.printf("F%3d", history.get(i)[Config.HISTORY_NUM_FISH_INDEX]);
+        	pw.printf(",S%3d", history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX]);
+            pw.printf("%4d)", history.get(i)[Config.HISTORY_CHRONON_INDEX]);
+            
+            if (history.get(i)[Config.HISTORY_NUM_FISH_INDEX] > history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX]) {
+            	for(int t = 0; t < history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH); t++) {
+            		pw.print(Config.SHARK_MARK);
+            	}
+            	for (int t = 0; t < history.get(i)[Config.HISTORY_NUM_FISH_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH) - (history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH)); t++) {
+            		pw.print(Config.FISH_MARK);
+            	}
+            } else {
+            	for (int t = 0; t < history.get(i)[Config.HISTORY_NUM_FISH_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH); t++) {
+            		pw.print(Config.FISH_MARK);
+            	}
+            	for(int t = 0; t < history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH) - (history.get(i)[Config.HISTORY_NUM_FISH_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH)); t++) {
+            		pw.print(Config.SHARK_MARK);
+            	}
+            } 
+            pw.println();  
         }
-        
-        
-        
-        pw.close(); 
+        pw.close();
     }
 }

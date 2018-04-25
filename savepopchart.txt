@@ -1,20 +1,18 @@
-seed=4455
-ocean_width=54
-ocean_height=45
-starting_fish=4
-starting_sharks=4
-fish_breed=4
-sharks_breed=4
-sharks_starve=4
+seed=789
+ocean_width=20
+ocean_height=20
+starting_fish=100
+starting_sharks=100
+fish_breed=9
+sharks_breed=8
+sharks_starve=7
 
 Population Chart
-Numbers of fish(.) and sharks(O) in units of 48./nF 16,S  0  10)
-F 16,S  0  10)
-F 16,S  0  10)
-F 16,S  0  10)
-F 16,S  0  10)
-F 16,S  0  10)
-F 16,S  0  10)
-F 16,S  0  10)
-F 16,S  0  10)
-F 16,S  0  10)
+Numbers of fish(.) and sharks(O) in units of 8.
+F100,S100   1)............
+F 55,S112   2)......OOOOOOOO
+F 24,S126   3)...OOOOOOOOOOOO
+F 11,S136   4).OOOOOOOOOOOOOOOO
+F  3,S150   5)OOOOOOOOOOOOOOOOOO
+F  1,S154   6)OOOOOOOOOOOOOOOOOOO
+F  0,S166   7)OOOOOOOOOOOOOOOOOOOO
