@@ -143,6 +143,9 @@ public class WaTor {
 
         int currentChronon = 1;
         
+        //init the history array list
+        ArrayList<int[]> history = new ArrayList();
+        
         //simulation ends when no more sharks or fish remain
         boolean simulationEnd = numFish <= 0 || numSharks <= 0;
         while (!simulationEnd){
@@ -165,7 +168,7 @@ public class WaTor {
             		break;
             	}
             }
-            // run till 
+            // run until
             for (int k = 0; k < x; k++) {
    
             	//clear fishMoved and sharksMoved from previous chronon
@@ -177,12 +180,22 @@ public class WaTor {
                 
             	//call sharksHuntAndBreed
             	sharksHuntAndBreed(fish, sharks, fishMoved, sharksMoved, sharksBreed, starve, sharksStarve, randGen);
+            	
+            	//save our current info to the history array list to be used later if the user wants to save the population chart
+            	int[] currentInfo = new int[3];
+            	int[Config.HISTORY_CHRONON_INDEX] = currentChronon;
+            	int[Config.HISTORY_NUM_FISH_INDEX] = countCreatures(fish);
+            	int[Config.HISTORY_NUM_SHARKS_INDEX] = countCreatures(sharks);
+            	//TODO fix this shit
+            	
+            	
+            	history.add(currentInfo);
                 
             	//increment current chronon and count the current number of fish and sharks
             	currentChronon++;
             	numFish = countCreatures(fish);
             	numSharks = countCreatures(sharks);
-            
+            	
             	//if all the fish or sharks are gone then end simulation
             	simulationEnd = numFish <= 0 || numSharks <= 0;
             	if (simulationEnd) {
@@ -213,7 +226,7 @@ public class WaTor {
         //the population chart.
         //TODO Milestone 3
         try {
-        	saveSimulationParameters(simulationParameters, "save.txt");
+        	saveSimulationParameters(simulationParameters, "simParams.txt");
         } catch (IOException e) {
         	
         } catch (NullPointerException e) {
