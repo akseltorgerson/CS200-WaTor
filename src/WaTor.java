@@ -93,7 +93,7 @@ public class WaTor {
         //If the user enters a y or Y as the only non-whitespace characters
         //then prompt for filename and call loadSimulationParameters
         //TODO in Milestone 3
-        simulationParameters = loadSimulationParameters("save.txt");
+        //simulationParameters = loadSimulationParameters("save.txt");
         
         
         //prompts the user to enter the simulation parameters
@@ -1010,16 +1010,13 @@ public class WaTor {
      * @param simulationParameters The values of the parameters to write out.
      * @param filename The name of the file to write the parameters to.
      */
-    public static void saveSimulationParameters(int[] simulationParameters, String filename) throws IOException {
-    		
+    public static void saveSimulationParameters(int[] simulationParameters, String filename) throws IOException {	
     	File file = new File(filename);
     	FileWriter fw = new FileWriter(file);
     	PrintWriter pw = new PrintWriter(fw);
-   		
    		for (int i = 0; i < simulationParameters.length; i++) {
        		pw.println(Config.SIM_PARAMS[i] + "=" + simulationParameters[i]);
        	}    		
-    
    		pw.close();
     }    
     

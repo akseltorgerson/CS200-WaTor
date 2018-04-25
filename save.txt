@@ -1,8 +1,8 @@
 seed=45
-ocean_width=34
-ocean_height=3
-starting_fish=2
-starting_sharks=6
-fish_breed=7
-sharks_breed=8
-sharks_starve=8
+ocean_width=45
+ocean_height=45
+starting_fish=45
+starting_sharks=45
+fish_breed=45
+sharks_breed=45
+sharks_starve=45
