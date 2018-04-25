@@ -1,0 +1,20 @@
+seed=4455
+ocean_width=54
+ocean_height=45
+starting_fish=4
+starting_sharks=4
+fish_breed=4
+sharks_breed=4
+sharks_starve=4
+
+Population Chart
+Numbers of fish(.) and sharks(O) in units of 48./nF 16,S  0  10)
+F 16,S  0  10)
+F 16,S  0  10)
+F 16,S  0  10)
+F 16,S  0  10)
+F 16,S  0  10)
+F 16,S  0  10)
+F 16,S  0  10)
+F 16,S  0  10)
+F 16,S  0  10)

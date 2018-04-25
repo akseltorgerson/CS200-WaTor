@@ -145,7 +145,8 @@ public class WaTor {
         
         //init the history array list
         ArrayList<int[]> history = new ArrayList();
-        
+        int[] currentInfo = new int[3];
+
         //simulation ends when no more sharks or fish remain
         boolean simulationEnd = numFish <= 0 || numSharks <= 0;
         while (!simulationEnd){
@@ -181,26 +182,24 @@ public class WaTor {
             	//call sharksHuntAndBreed
             	sharksHuntAndBreed(fish, sharks, fishMoved, sharksMoved, sharksBreed, starve, sharksStarve, randGen);
             	
-            	//save our current info to the history array list to be used later if the user wants to save the population chart
-            	int[] currentInfo = new int[3];
-            	int[Config.HISTORY_CHRONON_INDEX] = currentChronon;
-            	int[Config.HISTORY_NUM_FISH_INDEX] = countCreatures(fish);
-            	int[Config.HISTORY_NUM_SHARKS_INDEX] = countCreatures(sharks);
-            	//TODO fix this shit
-            	
-            	
-            	history.add(currentInfo);
-                
-            	//increment current chronon and count the current number of fish and sharks
-            	currentChronon++;
+            	//get num fish and sharks
             	numFish = countCreatures(fish);
             	numSharks = countCreatures(sharks);
+                
+            	//save our current info to the history array list to be used later if the user wants to save the population chart
+                currentInfo[Config.HISTORY_CHRONON_INDEX] = currentChronon;
+                currentInfo[Config.HISTORY_NUM_FISH_INDEX] = numFish;
+                currentInfo[Config.HISTORY_NUM_SHARKS_INDEX] = numSharks;
+                history.add(currentInfo);
             	
             	//if all the fish or sharks are gone then end simulation
             	simulationEnd = numFish <= 0 || numSharks <= 0;
             	if (simulationEnd) {
             		break;
             	}
+                
+            	//increment current chronon
+                currentChronon++;            
             }
         }
         
@@ -226,7 +225,8 @@ public class WaTor {
         //the population chart.
         //TODO Milestone 3
         try {
-        	saveSimulationParameters(simulationParameters, "simParams.txt");
+        	//saveSimulationParameters(simulationParameters, "simParams.txt");
+            savePopulationChart(simulationParameters, history, oceanWidth, oceanHeight, "savepopchart.txt");
         } catch (IOException e) {
         	
         } catch (NullPointerException e) {
@@ -243,7 +243,7 @@ public class WaTor {
         //repeat the code to prompt asking the user if they want to save
         //the population chart.
         //TODO Milestone 3
-
+        
 
         input.close();
     }
@@ -1132,6 +1132,25 @@ public class WaTor {
      * @param filename The name of the file to write the parameters and chart to.
      */
     public static void savePopulationChart(int[]simulationParameters, ArrayList<int[]> history, int oceanWidth, int oceanHeight, String filename) throws IOException {
-        //TODO Milestone 3
+        //save all the parameters
+        File file = new File(filename);
+        FileWriter fw = new FileWriter(file);
+        PrintWriter pw = new PrintWriter(fw);
+        for (int i = 0; i < simulationParameters.length; i++) {
+            pw.println(Config.SIM_PARAMS[i] + "=" + simulationParameters[i]);
+        }           
+        
+        pw.print("\nPopulation Chart\nNumbers of fish(.) and sharks(O) in units of " + (oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH + "./n");
+        
+        for (int[] i : history) {
+            pw.printf("F%3d", history.get(i[Config.HISTORY_CHRONON_INDEX]-1)[Config.HISTORY_NUM_FISH_INDEX]);
+            pw.printf(",S%3d", history.get(i[Config.HISTORY_CHRONON_INDEX]-1)[Config.HISTORY_NUM_SHARKS_INDEX]);
+            pw.printf("%4d)", history.get(i[Config.HISTORY_CHRONON_INDEX]-1)[Config.HISTORY_CHRONON_INDEX]);
+            pw.println();
+        }
+        
+        
+        
+        pw.close(); 
     }
 }
