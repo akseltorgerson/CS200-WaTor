@@ -92,15 +92,16 @@ public class WaTor {
         //Ask user if they would like to load simulation parameters from a file. 
         //If the user enters a y or Y as the only non-whitespace characters
         //then prompt for filename and call loadSimulationParameters
+        
         System.out.print("Do you want to load simulation parameters from a file (y/n): ");
-        if (Character.toLowerCase(input.nextLine().charAt(0)) == 'y') {
+        String response = input.nextLine().trim();
+        if (response.equalsIgnoreCase("y")) {
         	System.out.print("Enter filename to load: ");
         	simulationParameters = loadSimulationParameters(input.nextLine());
         }
        
         //prompts the user to enter the simulation parameters
         if ( simulationParameters == null) {
-        	System.out.println("SimParam null");
             simulationParameters = new int[Config.SIM_PARAMS.length];
             for ( int i = 0; i < Config.SIM_PARAMS.length; i++) {
                 System.out.print("Enter " + Config.SIM_PARAMS[i] + ": ");
@@ -158,7 +159,7 @@ public class WaTor {
             //prompt user for Enter, # of chronon, or 'end'
             //Enter advances to next chronon, a number entered means run that many chronon, 'end' will end the simulation
             System.out.print("Press Enter, # of chronon, or 'end': ");
-            String response = input.nextLine().trim();
+            response = input.nextLine().trim();
             int x = 1;
             if (response.length() > 0) {
             	try {
@@ -230,17 +231,24 @@ public class WaTor {
         //If saveSimulationParameters throws an IOException then catch it and
         //repeat the code to prompt asking the user if they want to save
         //the population chart.
-        //TODO Milestone 3
-        try {
-        	//saveSimulationParameters(simulationParameters, "simParams.txt");
-            savePopulationChart(simulationParameters, history, oceanWidth, oceanHeight, "savepopchart.txt");
-        } catch (IOException e) {
-        	
-        } catch (NullPointerException e) {
-        	
+        String filename = null;
+        while(true) {
+            try {
+                System.out.print("Save simulation parameters (y/n): ");
+                response = input.nextLine().trim();
+                if (response.equalsIgnoreCase("y")) {
+                    System.out.print("Enter filename: ");
+                    filename = input.nextLine();
+                    saveSimulationParameters(simulationParameters, filename);
+                }
+                break;
+            } catch (IOException e) {
+                System.out.print("Unable to save to: " + filename);
+                continue;
+            }
         }
         
-        
+
         //Always prompt the user to see if they would like to save a 
         //population chart of the simulation.
         //If the user enters a y or Y as the only non-whitespace characters
@@ -249,9 +257,20 @@ public class WaTor {
         //If savePopulationChart throws an IOException then catch it and
         //repeat the code to prompt asking the user if they want to save
         //the population chart.
-        //TODO Milestone 3
-        
-
+        while(true) {
+            try {
+                System.out.print("Save population chart (y/n): ");
+                response = input.nextLine().trim();
+                if (response.equalsIgnoreCase("y")) {
+                    System.out.print("Enter filename: ");
+                    filename = input.nextLine();
+                    savePopulationChart(simulationParameters, history, oceanWidth, oceanHeight, filename);
+                }
+                break;
+            } catch (IOException e) {
+                continue;
+            }
+        }
         input.close();
     }
     
@@ -1069,8 +1088,8 @@ public class WaTor {
      */
     public static int[] loadSimulationParameters(String filename) {
         int[] params = null;
-        Scanner sc = null;
         String nextLine = "";
+        Scanner sc = null;
         try {
         	File file = new File(filename);
         	sc = new Scanner(file);
@@ -1086,10 +1105,18 @@ public class WaTor {
         } catch (Exception e) {
         	System.err.println("Unrecognized: " + nextLine);
         } finally {
-        	sc.close();
+        	if (sc != null) { sc.close(); }
         }
         return params;
     }  
+    
+    /**
+     * This function just returns math.ceil for integers so i don't need to import the whole math library
+     * @param number
+     * @param divisor
+     * @return Math.ceil for integers only
+     */
+    private static int getCeil(int number, int divisor) { return ((number % divisor) == 0) ? number / divisor : number / divisor + 1; }
     
     /**
      * This writes the simulation parameters and the chart of the simulation to a file.
@@ -1146,29 +1173,19 @@ public class WaTor {
         for (int i = 0; i < simulationParameters.length; i++) {
             pw.println(Config.SIM_PARAMS[i] + "=" + simulationParameters[i]);
         }           
-        
-        pw.print("\nPopulation Chart\nNumbers of fish(.) and sharks(O) in units of " + (oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH + ".\n");
-        
-        for (int i = 0; i<history.size(); i++) {
-        	pw.printf("F%3d", history.get(i)[Config.HISTORY_NUM_FISH_INDEX]);
-        	pw.printf(",S%3d", history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX]);
-            pw.printf("%4d)", history.get(i)[Config.HISTORY_CHRONON_INDEX]);
-            
-            if (history.get(i)[Config.HISTORY_NUM_FISH_INDEX] > history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX]) {
-            	for(int t = 0; t < history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH); t++) {
-            		pw.print(Config.SHARK_MARK);
-            	}
-            	for (int t = 0; t < history.get(i)[Config.HISTORY_NUM_FISH_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH) - (history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH)); t++) {
-            		pw.print(Config.FISH_MARK);
-            	}
-            } else {
-            	for (int t = 0; t < history.get(i)[Config.HISTORY_NUM_FISH_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH); t++) {
-            		pw.print(Config.FISH_MARK);
-            	}
-            	for(int t = 0; t < history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH) - (history.get(i)[Config.HISTORY_NUM_FISH_INDEX] / ((oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH)); t++) {
-            		pw.print(Config.SHARK_MARK);
-            	}
-            } 
+        pw.print("\nPopulation Chart\nNumbers of fish(.) and sharks(O) in units of " + (oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH + ".");
+        pw.println();
+        for (int i = 0; i<history.size(); i++) {   
+            int unitSize = getCeil((oceanWidth * oceanHeight), Config.POPULATION_CHART_WIDTH);
+            int sharkMarks = getCeil(history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX], unitSize);
+            int fishMarks = getCeil(history.get(i)[Config.HISTORY_NUM_FISH_INDEX], unitSize);
+            String sharksAndFishLine = ((history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX]) > (history.get(i)[Config.HISTORY_NUM_FISH_INDEX])) 
+                                ? new String(new char[fishMarks]).replace('\0', Config.FISH_MARK)
+                                    + new String(new char[sharkMarks - fishMarks]).replace('\0', Config.SHARK_MARK)
+                                : new String(new char[sharkMarks]).replace('\0', Config.SHARK_MARK)
+                                    + new String(new char[fishMarks - sharkMarks]).replace('\0', Config.FISH_MARK);
+            sharksAndFishLine += new String(new char[Config.POPULATION_CHART_WIDTH - sharksAndFishLine.length()]).replace('\0', ' ');
+            pw.printf("F%3d,S%3d%5d)%s", history.get(i)[Config.HISTORY_NUM_FISH_INDEX], history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX], history.get(i)[Config.HISTORY_CHRONON_INDEX], sharksAndFishLine);
             pw.println();  
         }
         pw.close();
