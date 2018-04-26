@@ -105,7 +105,7 @@ public class WaTor {
             simulationParameters = new int[Config.SIM_PARAMS.length];
             for ( int i = 0; i < Config.SIM_PARAMS.length; i++) {
                 System.out.print("Enter " + Config.SIM_PARAMS[i] + ": ");
-                simulationParameters[i] = input.nextInt();
+                simulationParameters[i] = input.nextInt(); // no need to try and catch here because the method handles it for us
             }
             input.nextLine(); //read and ignore remaining newline
         }
@@ -232,8 +232,8 @@ public class WaTor {
         //repeat the code to prompt asking the user if they want to save
         //the population chart.
         String filename = null;
-        while(true) {
-            try {
+        while(true) { // keep repeating until someone hits n or if they press y enters a valid filename
+            try { // make sure to run in a try because saveSimulationParameters DOES NOT have a try catch instead it throws an IOException
                 System.out.print("Save simulation parameters (y/n): ");
                 response = input.nextLine().trim();
                 if (response.equalsIgnoreCase("y")) {
@@ -242,7 +242,7 @@ public class WaTor {
                     saveSimulationParameters(simulationParameters, filename);
                 }
                 break;
-            } catch (IOException e) {
+            } catch (IOException e) { // catch an IO exception if they try and enter an invalid file path or name
                 System.out.print("Unable to save to: " + filename);
                 continue;
             }
@@ -257,7 +257,7 @@ public class WaTor {
         //If savePopulationChart throws an IOException then catch it and
         //repeat the code to prompt asking the user if they want to save
         //the population chart.
-        while(true) {
+        while(true) { // same thing as the saveSimParametrs above ^^
             try {
                 System.out.print("Save population chart (y/n): ");
                 response = input.nextLine().trim();
@@ -267,7 +267,7 @@ public class WaTor {
                     savePopulationChart(simulationParameters, history, oceanWidth, oceanHeight, filename);
                 }
                 break;
-            } catch (IOException e) {
+            } catch (IOException e) { // if the method throws an exception make sure to catch, prompt then repeat
             	System.out.print("Unable to save to: " + filename);
                 continue;
             }
@@ -838,13 +838,13 @@ public class WaTor {
         // Swim and Breed Fish
         for (int i = 0; i < fishMove.length; ++i) {
             for (int t = 0; t < fishMove[0].length; ++t) {              
-                if (!fishMove[i][t] && fish[i][t] != Config.EMPTY) {    
-                    int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen);
-                    if (chosenMove == null) {
+                if (!fishMove[i][t] && fish[i][t] != Config.EMPTY) {    // if the array spot is a fish
+                    int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, t), randGen); // choose a move
+                    if (chosenMove == null) { // if it cant move then it stays
                         aFishStays(fish, fishMove, i, t);
-                    } else if (fish[i][t] < fishBreed) {
+                    } else if (fish[i][t] < fishBreed) { // move the fish if it can and if its young
                         aFishMoves(fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
-                    } else {
+                    } else { // otherwise if its old enough to breen move it and breed
                         aFishMovesAndBreeds(fish, fishMove, i, t, chosenMove[0], chosenMove[1]);
                     }
                 }
@@ -981,26 +981,26 @@ public class WaTor {
         }
         
         // Sharks Hunt and Breed
-        for (int i = 0; i < sharksMove.length; i++) {
+        for (int i = 0; i < sharksMove.length; i++) { // loop through the entire sharks aray
             for (int j = 0; j < sharksMove[0].length; ++j) {
                 if (!sharksMove[i][j] && sharks[i][j] != Config.EMPTY) {
-                    if (starve[i][j] >= sharksStarve) {
+                    if (starve[i][j] >= sharksStarve) { // if the shark starves then call shark starves array
                         sharkStarves(sharks, sharksMove, starve, i, j);
-                    } else {
-                        if (fishPositions(fish, i, j).size() == 0) {
+                    } else { //otherwise if it doesnt starve
+                        if (fishPositions(fish, i, j).size() == 0) { // if there are not any fish around
                             int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, j), randGen);
-                            if (chosenMove == null) {
-                                sharkStays(sharks, sharksMove, starve, i, j);
-                            } else if (sharks[i][j] < sharksBreed) {
-                                sharkMoves(sharks, sharksMove, starve, i, j, chosenMove[0], chosenMove[1]);
-                            } else {
+                            if (chosenMove == null) { // if the shark is surrounded by other shakrs
+                                sharkStays(sharks, sharksMove, starve, i, j); // the shark stays
+                            } else if (sharks[i][j] < sharksBreed) { // if its younger than the breeding age
+                                sharkMoves(sharks, sharksMove, starve, i, j, chosenMove[0], chosenMove[1]); // move the shark
+                            } else { // otherwise it moves and breds
                                 sharkMovesAndBreeds(sharks, sharksMove, starve, i, j, chosenMove[0], chosenMove[1]);
                             }
-                        } else {
+                        } else { // if there are fish nearby
                             int[] chosenMove = chooseMove(fishPositions(fish, i, j),randGen);
-                            if(chosenMove != null && sharks[i][j] < sharksBreed){
-                                sharkEatsFish(sharks, sharksMove, starve, fish, fishMove, i, j, chosenMove[0], chosenMove[1]);
-                            } else {
+                            if(chosenMove != null && sharks[i][j] < sharksBreed){ // choose a random move and if its not null and the shark is young
+                                sharkEatsFish(sharks, sharksMove, starve, fish, fishMove, i, j, chosenMove[0], chosenMove[1]); // shark eats fish
+                            } else { // otherwise it eats and breeds
                                 sharkEatsFishAndBreeds(sharks, sharksMove, starve, fish, fishMove, i, j, chosenMove[0], chosenMove[1]);
                             }
                         }
@@ -1054,8 +1054,8 @@ public class WaTor {
     	File file = new File(filename);
     	FileWriter fw = new FileWriter(file);
     	PrintWriter pw = new PrintWriter(fw);
-   		for (int i = 0; i < simulationParameters.length; i++) {
-       		pw.println(Config.SIM_PARAMS[i] + "=" + simulationParameters[i]);
+   		for (int i = 0; i < simulationParameters.length; i++) { // loop through every sim param
+       		pw.println(Config.SIM_PARAMS[i] + "=" + simulationParameters[i]); // print the name followed by equal sign and then the param value
        	}    		
    		pw.close();
     }    
@@ -1092,19 +1092,19 @@ public class WaTor {
         String nextLine = "";
         Scanner sc = null;
         try {
-        	File file = new File(filename);
+        	File file = new File(filename); // make sure this is in a try catch because it doesn't throw an exception automatically
         	sc = new Scanner(file);
         	params = new int[Config.SIM_PARAMS.length];
-        	while (sc.hasNextLine()) {
-        	    nextLine = sc.nextLine();
-        		if (!nextLine.contains("=")) { break; }
-        		int index = indexForParam(nextLine.substring(0, nextLine.indexOf("=")));
-        		params[index] = Integer.parseInt(nextLine.substring(nextLine.indexOf("=")+1));
+        	while (sc.hasNextLine()) { // while scanner gets another line
+        	    nextLine = sc.nextLine(); // grab the line
+        		if (!nextLine.contains("=")) { break; } // if it doesnt contain an "="
+        		int index = indexForParam(nextLine.substring(0, nextLine.indexOf("="))); // the index is indexForParam of the text before the equal sign
+        		params[index] = Integer.parseInt(nextLine.substring(nextLine.indexOf("=")+1)); // the number is everything after the 
         	}
         } catch (FileNotFoundException e) {
-        	System.err.println("File not found: " + filename);
+        	System.err.println("File not found: " + filename); // catch the exception if file DNE
         } catch (Exception e) {
-        	System.err.println("Unrecognized: " + nextLine);
+        	System.err.println("Unrecognized: " + nextLine); // catch if one of the lines is unrecognized
         } finally {
         	if (sc != null) { sc.close(); }
         }
@@ -1172,22 +1172,22 @@ public class WaTor {
         FileWriter fw = new FileWriter(file);
         PrintWriter pw = new PrintWriter(fw);
         for (int i = 0; i < simulationParameters.length; i++) {
-            pw.println(Config.SIM_PARAMS[i] + "=" + simulationParameters[i]);
+            pw.println(Config.SIM_PARAMS[i] + "=" + simulationParameters[i]); // do the same method as saveSimulationParameters
         }           
-        pw.print("\nPopulation Chart\nNumbers of fish(.) and sharks(O) in units of " + (oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH + ".");
+        pw.print("\nPopulation Chart\nNumbers of fish(" + Config.FISH_MARK + ") and sharks(" + Config.SHARK_MARK +") in units of " + (oceanWidth * oceanHeight) / Config.POPULATION_CHART_WIDTH + ".");
         pw.println();
-        for (int i = 0; i<history.size(); i++) {   
-            int unitSize = getCeil((oceanWidth * oceanHeight), Config.POPULATION_CHART_WIDTH);
-            int sharkMarks = getCeil(history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX], unitSize);
+        for (int i = 0; i<history.size(); i++) {   // loop through the size of history (how many chronons there are)
+            int unitSize = getCeil((oceanWidth * oceanHeight), Config.POPULATION_CHART_WIDTH); // round unit size to ceiling
+            int sharkMarks = getCeil(history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX], unitSize); // get how many shark chars and fish you will need to print
             int fishMarks = getCeil(history.get(i)[Config.HISTORY_NUM_FISH_INDEX], unitSize);
-            String sharksAndFishLine = ((history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX]) > (history.get(i)[Config.HISTORY_NUM_FISH_INDEX])) 
-                                ? new String(new char[fishMarks]).replace('\0', Config.FISH_MARK)
-                                    + new String(new char[sharkMarks - fishMarks]).replace('\0', Config.SHARK_MARK)
+            String sharksAndFishLine = ((history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX]) > (history.get(i)[Config.HISTORY_NUM_FISH_INDEX])) // uses a ternary operator to see if sharks are greater or if fish are
+                                ? new String(new char[fishMarks]).replace('\0', Config.FISH_MARK) // if the sharks are more create a char array of fish characters that are fish units long then add the remaining sharks to the end
+                                    + new String(new char[sharkMarks - fishMarks]).replace('\0', Config.SHARK_MARK) // if there are more fish than sharks create a char array of sharks units long then add the remaining fish to the end
                                 : new String(new char[sharkMarks]).replace('\0', Config.SHARK_MARK)
                                     + new String(new char[fishMarks - sharkMarks]).replace('\0', Config.FISH_MARK);
-            sharksAndFishLine += new String(new char[Config.POPULATION_CHART_WIDTH - sharksAndFishLine.length()]).replace('\0', ' ');
+            sharksAndFishLine += new String(new char[Config.POPULATION_CHART_WIDTH - sharksAndFishLine.length()]).replace('\0', ' '); // add remaining white space to the end
             pw.printf("F%3d,S%3d%5d)%s", history.get(i)[Config.HISTORY_NUM_FISH_INDEX], history.get(i)[Config.HISTORY_NUM_SHARKS_INDEX], history.get(i)[Config.HISTORY_CHRONON_INDEX], sharksAndFishLine);
-            pw.println();  
+            pw.println();  // ^^ print f with all of them combined cause i just wanted to do it in one line
         }
         pw.close();
     }
