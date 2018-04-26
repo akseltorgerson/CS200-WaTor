@@ -268,6 +268,7 @@ public class WaTor {
                 }
                 break;
             } catch (IOException e) {
+            	System.out.print("Unable to save to: " + filename);
                 continue;
             }
         }
