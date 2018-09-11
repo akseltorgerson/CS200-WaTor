@@ -989,7 +989,7 @@ public class WaTor {
                     } else { //otherwise if it doesnt starve
                         if (fishPositions(fish, i, j).size() == 0) { // if there are not any fish around
                             int[] chosenMove = chooseMove(unoccupiedPositions(fish, sharks, i, j), randGen);
-                            if (chosenMove == null) { // if the shark is surrounded by other shakrs
+                            if (chosenMove == null) { // if the shark is surrounded by other sharks
                                 sharkStays(sharks, sharksMove, starve, i, j); // the shark stays
                             } else if (sharks[i][j] < sharksBreed) { // if its younger than the breeding age
                                 sharkMoves(sharks, sharksMove, starve, i, j, chosenMove[0], chosenMove[1]); // move the shark
